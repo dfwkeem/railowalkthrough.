@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rialo — For the Rest of Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,600;0,700;0,900;1,700;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0c0804;
+  --bg2:      #110e08;
+  --bg3:      #17120a;
+  --border:   #2e2010;
+  --border2:  #3a2a14;
+  --gold:     #c8801e;
+  --gold2:    #e8a040;
+  --gold3:    #f0c070;
+  --cream:    #f0e4cc;
+  --text:     #d8c8a8;
+  --muted:    #7a6a50;
+  --muted2:   #5a4a34;
+  --red:      #c84030;
+  --green:    #5a9040;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* GRAIN */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 6%;
+  background: rgba(12,8,4,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 6% 5rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-radial {
+  position: absolute;
+  width: 900px; height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,128,30,0.07) 0%, transparent 65%);
+  top: 50%; left: -10%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(46,32,16,0.4) 80px),
+    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(46,32,16,0.2) 80px);
+  pointer-events: none;
+}
+
+.h-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2.5rem;
+  position: relative;
+  animation: fadeUp 0.7s ease both;
+}
+.h-tag::before { content: '// '; opacity: 0.5; }
+
+.hero-title {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 2rem;
+  position: relative;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+.hero-title span { color: var(--gold); }
+
+.hero-sub {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  position: relative;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-cta {
+  display: inline-block;
+  background: var(--gold);
+  color: #0c0804;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 1rem 2.2rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+.hero-cta:hover { background: var(--cream); transform: translateY(-2px); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 6%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted2);
+}
+.hero-scroll span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+.scroll-tick {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--muted2), transparent);
+}
+
+/* ── SHARED ── */
+section { padding: 6rem 6%; border-bottom: 1px solid var(--border); position: relative; }
+.max { max-width: 1120px; margin: 0 auto; }
+
+.s-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.s-label::before { content: '// '; opacity: 0.5; }
+
+.s-title {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  margin-bottom: 1.5rem;
+}
+.s-title span { color: var(--gold); }
+
+.rule {
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 2.5rem;
+}
+
+/* ── WHAT IS RIALO ── */
+#what { background: var(--bg2); }
+
+.what-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+}
+
+.what-text p {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.3rem;
+}
+.what-text p strong { color: var(--text); font-weight: 600; }
+
+.what-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 2rem;
+}
+
+.what-row {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.what-row:first-child { padding-top: 0; }
+.what-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.w-bullet {
+  width: 6px; height: 6px;
+  background: var(--gold);
+  flex-shrink: 0;
+  margin-top: 0.55rem;
+}
+
+.what-row strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+  font-style: normal;
+}
+.what-row span { font-size: 0.78rem; color: var(--muted2); line-height: 1.5; }
+
+/* ── DIFFERENT ── */
+#different { background: var(--bg); }
+
+.diff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+.diff-card {
+  background: var(--bg);
+  padding: 2.2rem;
+  transition: background 0.3s;
+  position: relative;
+}
+.diff-card:hover { background: var(--bg2); }
+
+.diff-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--muted2);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.2rem;
+}
+
+.diff-card h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 0.7rem;
+}
+
+.diff-card p {
+  font-size: 0.83rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── FOUNDERS ── */
+#founders { background: var(--bg2); }
+
+.founders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+.founder-card {
+  background: var(--bg2);
+  padding: 3rem 2.5rem;
+  transition: background 0.3s;
+}
+.founder-card:hover { background: var(--bg3); }
+
+.founder-initial {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 3rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.founder-card h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+  font-style: normal;
+}
+
+.founder-role {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.founder-card p {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+.founder-card p strong { color: var(--text); font-weight: 600; }
+
+.founder-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1.5rem;
+}
+.f-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--muted2);
+  border: 1px solid var(--border2);
+  padding: 0.2rem 0.65rem;
+}
+
+/* ── BACKERS ── */
+#backers { background: var(--bg); }
+
+.raise-strip {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 2rem 2.5rem;
+  margin-bottom: 2.5rem;
+}
+.raise-fig {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 3.5rem;
+  color: var(--gold);
+  line-height: 1;
+  white-space: nowrap;
+}
+.raise-text { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+.raise-text strong { color: var(--text); display: block; font-weight: 600; margin-bottom: 0.3rem; }
+
+.backers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.backer-card {
+  background: var(--bg);
+  padding: 2rem;
+  transition: background 0.2s;
+}
+.backer-card:hover { background: var(--bg2); }
+.backer-card.lead {
+  background: var(--bg2);
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.backer-abbr {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 0.7rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  border: 1px solid var(--border2);
+  padding: 0.6rem 0.8rem;
+  white-space: nowrap;
+}
+
+.lead-mark {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+
+.backer-card h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cream);
+  margin-bottom: 0.4rem;
+  font-style: normal;
+}
+.backer-card p { font-size: 0.8rem; color: var(--muted2); line-height: 1.6; font-weight: 300; }
+
+/* ── ECOSYSTEM ── */
+#ecosystem { background: var(--bg2); }
+
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+.eco-card {
+  background: var(--bg2);
+  padding: 2.2rem;
+  transition: background 0.3s;
+}
+.eco-card:hover { background: var(--bg3); }
+
+.eco-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.eco-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.status {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid;
+}
+.s-live   { color: #7ab858; border-color: #3a5828; }
+.s-build  { color: var(--gold); border-color: var(--border2); }
+.s-soon   { color: var(--muted); border-color: var(--border); }
+
+.eco-card h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+  font-style: normal;
+}
+.eco-card p { font-size: 0.82rem; color: var(--muted2); line-height: 1.65; font-weight: 300; }
+
+/* ── CONTRIBUTE ── */
+#contribute { background: var(--bg); }
+
+.contrib-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+.contrib-card {
+  background: var(--bg);
+  padding: 2.5rem;
+  transition: background 0.3s;
+}
+.contrib-card:hover { background: var(--bg2); }
+
+.contrib-mark {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 2.5rem;
+  color: var(--gold);
+  opacity: 0.4;
+  line-height: 1;
+  margin-bottom: 1.2rem;
+}
+
+.contrib-card h3 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--cream);
+  margin-bottom: 0.7rem;
+  font-style: normal;
+}
+
+.contrib-card > p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.contrib-steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.contrib-steps li {
+  font-size: 0.8rem;
+  color: var(--muted2);
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.contrib-steps li::before {
+  content: '→';
+  color: var(--gold);
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  margin-top: 0.05rem;
+}
+
+/* ── QUIZ ── */
+#quiz { background: var(--bg2); }
+
+.quiz-wrap {
+  max-width: 720px;
+  margin: 3rem auto 0;
+}
+
+.quiz-shell {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 3rem;
+}
+
+.quiz-prog {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 2.5rem;
+}
+.q-pip {
+  height: 2px;
+  flex: 1;
+  background: var(--border2);
+  transition: background 0.3s;
+}
+.q-pip.on  { background: var(--gold); }
+.q-pip.done { background: var(--muted2); }
+
+.q-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+}
+.q-num::before { content: '// '; opacity: 0.5; }
+
+.q-text {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.35rem;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: 2rem;
+}
+
+.q-opts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.q-opt {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 0.9rem 1.2rem;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.q-opt:hover { border-color: var(--border2); background: var(--bg3); color: var(--cream); }
+.q-opt.correct { border-color: #5a9040; background: rgba(90,144,64,0.1); color: #8aba68; }
+.q-opt.wrong   { border-color: #c84030; background: rgba(200,64,48,0.1); color: #e07060; }
+.q-opt:disabled { cursor: default; }
+
+.q-fb {
+  font-size: 0.82rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  display: none;
+  font-weight: 300;
+}
+.q-fb.show { display: block; }
+.q-fb.good { color: #8aba68; border-color: #3a5828; background: rgba(90,144,64,0.06); }
+.q-fb.bad  { color: #e07060; border-color: #6a2018; background: rgba(200,64,48,0.06); }
+
+.q-next {
+  background: var(--gold);
+  color: #0c0804;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+}
+.q-next.show { display: inline-block; }
+.q-next:hover { background: var(--cream); }
+
+/* RESULT */
+.q-result { display: none; text-align: center; }
+.q-result.show { display: block; }
+.result-big {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 5rem;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.result-of {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 1.5rem;
+}
+.result-msg {
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto 2rem;
+}
+.q-restart {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 0.8rem 2rem;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.q-restart:hover { background: var(--gold); color: #0c0804; }
+
+/* ── RESOURCES ── */
+#resources { background: var(--bg); }
+
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+.res-link {
+  background: var(--bg);
+  padding: 1.6rem 2rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  transition: background 0.2s;
+  color: var(--text);
+}
+.res-link:hover { background: var(--bg2); }
+
+.res-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 32px;
+  text-align: center;
+}
+
+.res-link h4 {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--cream);
+  margin-bottom: 0.1rem;
+  font-style: normal;
+}
+.res-link p { font-size: 0.75rem; color: var(--muted2); font-weight: 300; }
+
+.res-arrow {
+  margin-left: auto;
+  color: var(--muted2);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition: color 0.2s, transform 0.2s;
+}
+.res-link:hover .res-arrow { color: var(--gold); transform: translateX(3px); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 3rem 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.foot-logo {
+  font-family: 'Barlow', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+footer p {
+  font-size: 0.75rem;
+  color: var(--muted2);
+  line-height: 1.6;
+  font-weight: 300;
+}
+footer a { color: var(--gold); text-decoration: none; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .what-grid, .founders-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .diff-grid, .eco-grid, .contrib-grid { grid-template-columns: 1fr; }
+  .backers-grid { grid-template-columns: 1fr; }
+  .backer-card.lead { grid-template-columns: 1fr; }
+  .raise-strip { flex-direction: column; gap: 1rem; align-items: flex-start; }
+  .nav-links { display: none; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">RIALO</a>
+  <ul class="nav-links">
+    <li><a href="#what">What is it</a></li>
+    <li><a href="#different">What's different</a></li>
+    <li><a href="#founders">Founders</a></li>
+    <li><a href="#backers">Backers</a></li>
+    <li><a href="#ecosystem">Ecosystem</a></li>
+    <li><a href="#contribute">Contribute</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-radial"></div>
+  <div class="hero-lines"></div>
+  <div class="h-tag">rialo.io — devnet live</div>
+  <h1 class="hero-title">What if blockchain<br>just <span>worked?</span></h1>
+  <p class="hero-sub">That's the question Rialo was built to answer. This site walks you through what it is, who built it, and where you fit in — no jargon, no prior knowledge required.</p>
+  <a href="#what" class="hero-cta">Start Learning →</a>
+  <div class="hero-scroll">
+    <div class="scroll-tick"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- WHAT IS RIALO -->
+<section id="what">
+  <div class="max">
+    <div class="what-grid">
+      <div class="what-text">
+        <div class="s-label">The basics</div>
+        <h2 class="s-title">So what exactly <span>is Rialo?</span></h2>
+        <div class="rule"></div>
+        <p>Rialo is a <strong>decentralized, high-performance blockchain</strong> — a full-stack programmable network built to bring Web3 into everyday life. That phrase "full-stack" is doing real work here.</p>
+        <p>It means everything a modern app needs — <strong>live data feeds, automatic execution, cross-chain movement, and privacy-first UX</strong> — is built directly into the protocol itself. Not assembled from separate tools. Not patched on from outside. Built in from day one.</p>
+        <p>The result is apps that feel like real software. You sign in with email or phone. There's no wallet to set up, no seed phrase to write down, no approval pop-up asking you to sign something cryptic. The chain handles the complexity invisibly.</p>
+        <p>It's built by <strong>Subzero Labs</strong>, founded by engineers who previously built Sui at Mysten Labs. They've been deep inside this problem before. Rialo is their answer to everything they saw was still missing.</p>
+      </div>
+      <div>
+        <div class="what-card">
+          <div class="what-row"><div class="w-bullet"></div><div><strong>No wallet needed</strong><span>Sign in with email or phone. Native 2FA. No seed phrases required.</span></div></div>
+          <div class="what-row"><div class="w-bullet"></div><div><strong>Reacts automatically</strong><span>Event-driven — acts the moment a condition is met, with no human prompting.</span></div></div>
+          <div class="what-row"><div class="w-bullet"></div><div><strong>Live data, natively</strong><span>Reads real-world feeds directly into smart contracts. No oracle dependency.</span></div></div>
+          <div class="what-row"><div class="w-bullet"></div><div><strong>AI agent ready</strong><span>SCALE protocol powers on-chain contracts for AI agents doing real work.</span></div></div>
+          <div class="what-row"><div class="w-bullet"></div><div><strong>$20M raised</strong><span>Backed by Pantera Capital and six other top-tier investors in 2025.</span></div></div>
+          <div class="what-row"><div class="w-bullet"></div><div><strong>Currently on Devnet</strong><span>Live for builders now. Public launch ahead. The early window is open.</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT MAKES IT DIFFERENT -->
+<section id="different">
+  <div class="max">
+    <div class="s-label">The edge</div>
+    <h2 class="s-title">What makes Rialo <span>different?</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:560px;font-size:0.95rem;font-weight:300;line-height:1.7;">Six things the team built natively into the protocol. Each one sounds simple. Together, they change what's actually possible to build.</p>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-num">01</div>
+        <h3>Real World Apps</h3>
+        <p>Web calls, event triggers, and cross-chain flows are built directly into the protocol. Developers write logic — the infrastructure does the rest, without middleware or bots holding things together.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">02</div>
+        <h3>Real Time Data</h3>
+        <p>Native pricing feeds with stable, predictable costs. Live market data, credit scores, and external API responses flow directly into smart contracts. No oracle required. No third-party dependency.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">03</div>
+        <h3>Sub-Second Reactions</h3>
+        <p>Rialo is event-driven. When a condition is met — a price moves, a timer fires, a message lands — the chain reacts on its own. No gas wars. No polling. No waiting for someone to push a button.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">04</div>
+        <h3>No Bridges Needed</h3>
+        <p>Data and assets move across chains and apps natively. Smarter pricing, fairer swaps, faster settlements — all without wrappers, intermediaries, or the security risks that come with bridge architecture.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">05</div>
+        <h3>Privacy First UX</h3>
+        <p>Encrypted messages to email, phone, and device. Native 2FA, scheduled transactions, and social login are all built in. Users interact with Rialo apps the way they already interact with everything else online.</p>
+      </div>
+      <div class="diff-card">
+        <div class="diff-num">06</div>
+        <h3>Ergonomic By Design</h3>
+        <p>Async/await, randomness, and RISC-V architecture so developers write actual product logic — not infrastructure scaffolding. The stack gets out of the way and lets builders build.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDERS -->
+<section id="founders">
+  <div class="max">
+    <div class="s-label">The people</div>
+    <h2 class="s-title">Who <span>built this?</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:580px;font-size:0.95rem;font-weight:300;line-height:1.7;margin-bottom:0;">Rialo is built by two people who have done this before — at the highest level. Both founders came from Mysten Labs, where they helped engineer Sui, one of the fastest blockchains in existence.</p>
+    <div class="founders-grid">
+      <div class="founder-card">
+        <div class="founder-initial">A.</div>
+        <h3>Ade Adepoju</h3>
+        <div class="founder-role">Co-Founder &amp; CEO</div>
+        <p>Ade's career is a study in building things that matter at scale. At <strong>Netflix</strong>, he worked on distributed infrastructure for one of the world's most demanding platforms. At <strong>AMD</strong>, he developed advanced microprocessor technology that pushed the boundaries of what hardware could do.</p>
+        <p>At <strong>Mysten Labs</strong>, he was a core contributor to the Sui network — where he gained firsthand experience building a high-performance L1 blockchain from the ground up. That experience is the direct foundation of what Rialo runs on.</p>
+        <div class="founder-tags">
+          <span class="f-tag">Netflix</span>
+          <span class="f-tag">AMD</span>
+          <span class="f-tag">Mysten Labs</span>
+          <span class="f-tag">Sui</span>
+          <span class="f-tag">Distributed Systems</span>
+        </div>
+      </div>
+      <div class="founder-card">
+        <div class="founder-initial">L.</div>
+        <h3>Lu Zhang</h3>
+        <div class="founder-role">Co-Founder &amp; CTO</div>
+        <p>Lu's background sits at the exact intersection Rialo requires. At <strong>Meta</strong>, he led engineering on the Diem blockchain project and built large-scale AI and ML infrastructure — two disciplines that are central to what Rialo is becoming. At <strong>Google</strong>, he worked on systems that operate at internet scale.</p>
+        <p>He joined Mysten Labs alongside Ade, contributing to the Sui protocol before both of them decided to build what came next. His combination of blockchain protocol experience and production AI infrastructure is what makes Rialo's agent-first vision credible.</p>
+        <div class="founder-tags">
+          <span class="f-tag">Meta</span>
+          <span class="f-tag">Diem</span>
+          <span class="f-tag">Google</span>
+          <span class="f-tag">Mysten Labs</span>
+          <span class="f-tag">AI / ML Infrastructure</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BACKERS -->
+<section id="backers">
+  <div class="max">
+    <div class="s-label">The capital</div>
+    <h2 class="s-title">Who's <span>backing Rialo?</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:580px;font-size:0.95rem;font-weight:300;line-height:1.7;margin-bottom:2rem;">In early 2025, Subzero Labs raised $20 million. The names behind that check matter — these are institutions that do serious due diligence before committing to anything.</p>
+    <div class="raise-strip">
+      <div class="raise-fig">$20M</div>
+      <div class="raise-text">
+        <strong>Seed Round — Early 2025</strong>
+        A mix of equity and token warrants. Led by Pantera Capital, with participation from six additional investors spanning crypto-native funds, exchange arms, and institutional backers.
+      </div>
+    </div>
+    <div class="backers-grid">
+      <div class="backer-card lead">
+        <div class="backer-abbr">PANTERA</div>
+        <div>
+          <div class="lead-mark">// Lead Investor</div>
+          <h3>Pantera Capital</h3>
+          <p>One of the oldest and most respected crypto-focused venture firms in the world. Pantera has backed some of the most consequential blockchain projects of the last decade. Their decision to lead Rialo's round is a signal of serious conviction — they don't take that position lightly.</p>
+        </div>
+      </div>
+      <div class="backer-card">
+        <div class="backer-abbr">COINBASE</div>
+        <div>
+          <h3>Coinbase Ventures</h3>
+          <p>The venture arm of the world's largest publicly traded crypto exchange. Their involvement signals mainstream infrastructure alignment.</p>
+        </div>
+      </div>
+      <div class="backer-card">
+        <div class="backer-abbr">VARIANT</div>
+        <div>
+          <h3>Variant Fund</h3>
+          <p>A fund focused on crypto ownership and the user-owned internet — known for early bets on protocols that put users at the center.</p>
+        </div>
+      </div>
+      <div class="backer-card">
+        <div class="backer-abbr">HASHED</div>
+        <div>
+          <h3>Hashed</h3>
+          <p>One of Asia's leading blockchain venture funds with deep roots in the Korean and broader Asia-Pacific crypto ecosystem.</p>
+        </div>
+      </div>
+      <div class="backer-card">
+        <div class="backer-abbr">MYSTEN</div>
+        <div>
+          <h3>Mysten Labs</h3>
+          <p>The team that built Sui investing in their former colleagues. That kind of internal vote of confidence carries real weight.</p>
+        </div>
+      </div>
+      <div class="backer-card">
+        <div class="backer-abbr">FABRIC</div>
+        <div>
+          <h3>Fabric Ventures</h3>
+          <p>A European Web3 fund with a strong track record in early-stage infrastructure and protocol investments.</p>
+        </div>
+      </div>
+      <div class="backer-card">
+        <div class="backer-abbr">MIRANA</div>
+        <div>
+          <h3>Mirana Ventures</h3>
+          <p>The venture arm of Bybit, one of the world's largest crypto exchanges. Strategic capital with real exchange distribution potential.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="max">
+    <div class="s-label">What's being built</div>
+    <h2 class="s-title">The ecosystem <span>today.</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:580px;font-size:0.95rem;font-weight:300;line-height:1.7;margin-bottom:0;">Rialo is on Devnet. Everything here is verified — sourced from official Rialo blog posts and announcements. Nothing invented.</p>
+    <div class="eco-grid">
+      <div class="eco-card">
+        <div class="eco-top"><div class="eco-icon">🤖</div><span class="status s-live">Live Demo</span></div>
+        <h3>SCALE Protocol</h3>
+        <p>A framework for contracting AI agents to do real work on-chain. Inspired by the YC SAFE note — simple terms, enforced automatically. Agents get paid when the job is done. No disputes possible.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-top"><div class="eco-icon">🐦</div><span class="status s-live">Live</span></div>
+        <h3>@chunliweb3</h3>
+        <p>A live Twitter AI agent deployed by the Rialo team as a public demonstration of SCALE in action. The first real agent running on Rialo's infrastructure — and the earliest proof of concept.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-top"><div class="eco-icon">🏠</div><span class="status s-build">Building</span></div>
+        <h3>Real World Assets</h3>
+        <p>Tokenized assets that are alive. Bonds that adjust to live data, real estate that distributes income automatically, assets that react to market events without a human in the loop.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-top"><div class="eco-icon">📊</div><span class="status s-soon">Coming Soon</span></div>
+        <h3>Prediction Markets</h3>
+        <p>Markets that resolve automatically when real-world outcomes happen. Rialo reads live data natively — no oracle needed, no manual settlement, no delay between outcome and resolution.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-top"><div class="eco-icon">💬</div><span class="status s-build">Building</span></div>
+        <h3>Privacy Messaging</h3>
+        <p>Encrypted on-chain communication delivered to email, phone, and device — with native 2FA and social login. Blockchain interaction that feels indistinguishable from sending a text.</p>
+      </div>
+      <div class="eco-card">
+        <div class="eco-top"><div class="eco-icon">⚙️</div><span class="status s-live">Live</span></div>
+        <h3>Devnet</h3>
+        <p>Rialo's builder testing environment is live. Experienced developers can apply for early access, explore the stack, and start building before the public launch opens the door to everyone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRIBUTE -->
+<section id="contribute">
+  <div class="max">
+    <div class="s-label">Your place</div>
+    <h2 class="s-title">Where do <span>you fit in?</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:580px;font-size:0.95rem;font-weight:300;line-height:1.7;margin-bottom:0;">Rialo is early. That means whatever you put into the ecosystem now carries real weight. Three ways to show up — pick the one that fits where you are.</p>
+    <div class="contrib-grid">
+      <div class="contrib-card">
+        <div class="contrib-mark">01</div>
+        <h3>Content Creator</h3>
+        <p>Explain Rialo to people who don't get it yet. The clearest voices in a new ecosystem become the most trusted. Your content today builds your reputation for when this reaches the mainstream.</p>
+        <ul class="contrib-steps">
+          <li>Write threads breaking down Rialo's tech in plain language</li>
+          <li>Create explainer videos or visual content for X</li>
+          <li>Tag @RialoHQ — they retweet community content</li>
+          <li>Apply for the Ambassador Program via Discord</li>
+          <li>5K+ followers? DM @RialoHQ about KOL partnerships</li>
+        </ul>
+      </div>
+      <div class="contrib-card">
+        <div class="contrib-mark">02</div>
+        <h3>Builder</h3>
+        <p>The ecosystem has real gaps. Prediction markets, community tools, games, agent marketplaces — none of it exists yet. Early builders on a $20M-backed network at Devnet stage have genuine first-mover advantage.</p>
+        <ul class="contrib-steps">
+          <li>Apply for Devnet early access via the official form</li>
+          <li>Join monthly hackathons — next focus is AI integrations</li>
+          <li>Build tools for newcomers entering the ecosystem</li>
+          <li>Connect with the team directly on Discord</li>
+          <li>Document your build publicly — it doubles as content</li>
+        </ul>
+      </div>
+      <div class="contrib-card">
+        <div class="contrib-mark">03</div>
+        <h3>Community Member</h3>
+        <p>Community is what makes an ecosystem feel alive. Early members who show up, contribute, and help others navigate become the foundation of what Rialo turns into.</p>
+        <ul class="contrib-steps">
+          <li>Join the Rialo Discord and introduce yourself</li>
+          <li>Follow and engage with @RialoHQ on X</li>
+          <li>Help new members understand what Rialo is</li>
+          <li>Apply for regional lead roles — stipends available</li>
+          <li>Early contributors are well positioned for future airdrops</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="max">
+    <div class="s-label">Test yourself</div>
+    <h2 class="s-title">Think you know <span>Rialo now?</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:500px;font-size:0.95rem;font-weight:300;line-height:1.7;">Six questions. All based on what you just read. No tricks — just a way to find out what actually landed.</p>
+    <div class="quiz-wrap">
+      <div class="quiz-shell">
+        <div class="quiz-prog" id="qProg"></div>
+        <div id="qBody">
+          <div class="q-num" id="qNum">question 01 of 06</div>
+          <div class="q-text" id="qText"></div>
+          <div class="q-opts" id="qOpts"></div>
+          <div class="q-fb" id="qFb"></div>
+          <button class="q-next" id="qNext" onclick="nextQ()">Next Question →</button>
+        </div>
+        <div class="q-result" id="qResult">
+          <div class="result-big" id="rScore"></div>
+          <div class="result-of">out of 6 correct</div>
+          <div class="result-msg" id="rMsg"></div>
+          <button class="q-restart" onclick="restartQ()">Try Again →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="max">
+    <div class="s-label">Go deeper</div>
+    <h2 class="s-title">Verified <span>resources.</span></h2>
+    <div class="rule"></div>
+    <p style="color:var(--muted);max-width:500px;font-size:0.95rem;font-weight:300;line-height:1.7;margin-bottom:0;">Everything here comes directly from official Rialo and Subzero Labs sources. Nothing paraphrased beyond recognition.</p>
+    <div class="res-grid">
+      <a href="https://www.rialo.io/posts/introducing-rialo" target="_blank" class="res-link">
+        <div class="res-icon">📄</div>
+        <div><h4>Introducing Rialo</h4><p>Official launch post from the team</p></div>
+        <span class="res-arrow">↗</span>
+      </a>
+      <a href="https://www.rialo.io/posts/rialo-makes-real-world-assets-real" target="_blank" class="res-link">
+        <div class="res-icon">🏠</div>
+        <div><h4>RWAs on Rialo</h4><p>How reactive real world assets work</p></div>
+        <span class="res-arrow">↗</span>
+      </a>
+      <a href="https://www.rialo.io/posts/making-the-agent-economy-simple-and-safe-with-rialo" target="_blank" class="res-link">
+        <div class="res-icon">🤖</div>
+        <div><h4>SCALE Protocol</h4><p>The agent economy explained</p></div>
+        <span class="res-arrow">↗</span>
+      </a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfc87ZbBl0PSa5FAuRnrfJoK_X7xe_bOUl6Gw5clDwoxgCUlA/viewform" target="_blank" class="res-link">
+        <div class="res-icon">🛠️</div>
+        <div><h4>Builder Early Access</h4><p>Apply for Devnet access</p></div>
+        <span class="res-arrow">↗</span>
+      </a>
+      <a href="https://twitter.com/RialoHQ" target="_blank" class="res-link">
+        <div class="res-icon">𝕏</div>
+        <div><h4>@RialoHQ on X</h4><p>Official updates and community</p></div>
+        <span class="res-arrow">↗</span>
+      </a>
+      <a href="https://www.rialo.io" target="_blank" class="res-link">
+        <div class="res-icon">🌐</div>
+        <div><h4>rialo.io</h4><p>Official website</p></div>
+        <span class="res-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">RIALO</div>
+  <p>Independent community resource for newcomers.<br>
+  Not officially affiliated with Subzero Labs. All information sourced from <a href="https://www.rialo.io" target="_blank">rialo.io</a> and verified public sources.</p>
+</footer>
+
+<script>
+const Qs = [
+  {
+    q: "What company is building Rialo?",
+    opts: ["Mysten Labs","Subzero Labs","Pantera Capital","Coinbase Ventures"],
+    ans: 1,
+    right: "Correct — Rialo is built by Subzero Labs, founded by Ade Adepoju and Lu Zhang.",
+    wrong: "Rialo is built by Subzero Labs. Mysten Labs is where both founders previously worked before starting their own company."
+  },
+  {
+    q: "Which blockchain did both Rialo founders help build before starting Subzero Labs?",
+    opts: ["Ethereum","Solana","Sui","Avalanche"],
+    ans: 2,
+    right: "Right — Ade and Lu were both engineers at Mysten Labs, where they contributed to building Sui.",
+    wrong: "Both founders worked at Mysten Labs and were core contributors to the Sui blockchain before founding Subzero Labs."
+  },
+  {
+    q: "What is SCALE on Rialo?",
+    opts: ["A token staking mechanism","A framework for contracting AI agents on-chain","A cross-chain bridge protocol","A governance voting system"],
+    ans: 1,
+    right: "Exactly — SCALE lets you contract AI agents to do real work, with payment enforced automatically when the job is complete.",
+    wrong: "SCALE is Rialo's protocol for contracting AI agents. Think of it like a SAFE note — but for agent work agreements enforced on-chain."
+  },
+  {
+    q: "How much did Subzero Labs raise in their seed round, and who led it?",
+    opts: ["$5M led by Variant","$10M led by Coinbase Ventures","$20M led by Pantera Capital","$50M led by Hashed"],
+    ans: 2,
+    right: "Correct — $20 million in early 2025, with Pantera Capital in the lead position.",
+    wrong: "Subzero Labs raised $20 million in early 2025 in a round led by Pantera Capital, with six other VCs participating."
+  },
+  {
+    q: "What is the biggest UX difference Rialo offers regular users?",
+    opts: ["Lower gas fees","Faster transaction confirmations","Sign in with email or phone — no wallet required","More tokens to trade"],
+    ans: 2,
+    right: "Yes — users sign in with email or phone. No wallet, no seed phrase, no friction. It behaves like a normal app.",
+    wrong: "The core UX shift is that users sign in with email or phone. No wallet setup, no seed phrase — Rialo handles the complexity invisibly."
+  },
+  {
+    q: "What is Rialo's current development stage?",
+    opts: ["Mainnet fully live","Devnet — open to builders testing the stack","Whitepaper and concept only","Closed private beta"],
+    ans: 1,
+    right: "Correct — Rialo is on Devnet. Builders can apply for early access and start testing. Public launch is ahead.",
+    wrong: "Rialo is currently on Devnet — live enough for builders to test, but the public mainnet launch is still coming."
+  }
+];
+
+let cur = 0, score = 0, answered = false;
+
+function buildProg() {
+  const el = document.getElementById('qProg');
+  el.innerHTML = '';
+  Qs.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'q-pip' + (i === cur ? ' on' : i < cur ? ' done' : '');
+    el.appendChild(d);
+  });
+}
+
+function loadQ() {
+  answered = false;
+  const q = Qs[cur];
+  document.getElementById('qNum').textContent = `question ${String(cur+1).padStart(2,'0')} of 0${Qs.length}`;
+  document.getElementById('qText').textContent = q.q;
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'q-opt';
+    b.textContent = o;
+    b.onclick = () => pick(i);
+    opts.appendChild(b);
+  });
+  document.getElementById('qFb').className = 'q-fb';
+  document.getElementById('qFb').textContent = '';
+  document.getElementById('qNext').className = 'q-next';
+  if (cur === Qs.length - 1) document.getElementById('qNext').textContent = 'See Results →';
+  else document.getElementById('qNext').textContent = 'Next Question →';
+  buildProg();
+}
+
+function pick(i) {
+  if (answered) return;
+  answered = true;
+  const q = Qs[cur];
+  const btns = document.querySelectorAll('.q-opt');
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('qFb');
+  if (i === q.ans) {
+    btns[i].classList.add('correct');
+    score++;
+    fb.textContent = '✓  ' + q.right;
+    fb.className = 'q-fb show good';
+  } else {
+    btns[i].classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    fb.textContent = '✗  ' + q.wrong;
+    fb.className = 'q-fb show bad';
+  }
+  document.getElementById('qNext').className = 'q-next show';
+}
+
+function nextQ() {
+  cur++;
+  if (cur >= Qs.length) showResult();
+  else loadQ();
+}
+
+function showResult() {
+  document.getElementById('qBody').style.display = 'none';
+  document.getElementById('qResult').className = 'q-result show';
+  document.getElementById('rScore').textContent = score;
+  const msgs = [
+    "Just getting started. Read back through — it clicks faster the second time.",
+    "Some things landed. A second read will fill in the gaps.",
+    "Decent foundation. You've got the core picture — a few details to sharpen.",
+    "Solid. You understand what Rialo is and where it's headed.",
+    "Strong grasp. You know this well enough to start contributing.",
+    "Perfect. You know Rialo as well as most people in the ecosystem right now."
+  ];
+  document.getElementById('rMsg').textContent = msgs[Math.min(score, 5)];
+  buildProg();
+}
+
+function restartQ() {
+  cur = 0; score = 0; answered = false;
+  document.getElementById('qBody').style.display = 'block';
+  document.getElementById('qResult').className = 'q-result';
+  loadQ();
+}
+
+loadQ();
+</script>
+</body>
+</html>
